@@ -3,66 +3,49 @@ import logging
 import threading
 import time
 import grpc
+import random
 
 from io import BytesIO, open
 
 import hello_pb2
 import hello_pb2_grpc
 
-from src.console import ask_name, ask_message
-
-_count = 0
+from src.LocalRemoteMapper import LocalRemoteMapper
 
 messages = []
 
 
-def set_interval(func, sec):
-    def func_wrapper():
-        set_interval(func, sec)
-        func()
-    t = threading.Timer(sec, func_wrapper)
-    t.start()
-    return t
+def createMapper():
+    for _ in range(4):
+        local = f"192.168.2.{random.randint(0, 255)}:{random.randint(0, 9999)}"
+        remote = f"10.{random.randint(0, 254)}.10.123:{random.randint(0, 999)}"
+        mapper = LocalRemoteMapper(local, remote)
+        messages.append(mapper)
+    return messages
 
-
-def for_loop():
-    for message in messages:
-        print(message)
-
-
-def get_input():
-    name = ask_name()
-    message = ask_message()
-    messages.append({"name": name, "message": message})
-    print('Message Sent!!\n\nWould you like to send another one?[Yes/No] | [y/n]')
-    another = input()
-    if another.lower() == 'Yes' or another.lower() == 'y':
-        get_input()
-    else:
-        return messages
-
-
+# 通过gRPC与服务器建立连接，并发送带有姓名和消息的请求。
 def greet_with_message(stub, name, message):
     start_time = time.time()
+    # 使用stub.Greet方法发送一个HelloRequest请求，请求中包含了name和message。
     response = stub.Greet(hello_pb2.HelloRequest(name=name, message=message))
     elapsed_time = (time.time() - start_time) * 1000
     print(response, f'in {elapsed_time}secs')
     byte = [r for r in response][0].data
-    with open('responses.txt', 'w+') as f:
-        text = byte.decode(encoding='utf-8')
-        f.write(text)
 
-
+# 作用是与gRPC服务器建立连接
 def run():
+    # 创建一个与gRPC服务器的连接，服务器地址为localhost:50051。
     with grpc.insecure_channel('localhost:50051') as channel:
+        # 创建一个HelloStub对象，该对象用于调用gRPC服务器上的方法。
         stub = hello_pb2_grpc.HelloStub(channel)
-        # for message in messages:
-        messages_ = get_input()
+        # 将要搜集的源和目的地址设置为一个类
+        messages_ = createMapper()
+
+        # 每个消息调用greet_with_message函数发送给服务器。
         for message in messages_:
-            greet_with_message(stub, name=message['name'], message=message['message'])
+            greet_with_message(stub, name=message.local, message=message.remote)
 
 
 if __name__ == '__main__':
     logging.basicConfig()
     run()
-    # for_loop()

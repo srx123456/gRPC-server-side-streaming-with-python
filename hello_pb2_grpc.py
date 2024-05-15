@@ -32,8 +32,11 @@ class HelloServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-
+# 将 HelloServicer 添加到 gRPC 服务器中。
 def add_HelloServicer_to_server(servicer, server):
+  # 创建一个字典 rpc_method_handlers，其中包含一个键值对，键为 'Greet'，值为 grpc.unary_stream_rpc_method_handler 方法的调用结果。
+  # rpc.unary_stream_rpc_method_handler 方法接受三个参数：servicer.Greet，request_deserializer 和 response_serializer。
+  # servicer.Greet 是一个方法，request_deserializer 和 response_serializer 是两个函数，分别用于反序列化请求和序列化响应。
   rpc_method_handlers = {
       'Greet': grpc.unary_stream_rpc_method_handler(
           servicer.Greet,
@@ -41,6 +44,8 @@ def add_HelloServicer_to_server(servicer, server):
           response_serializer=hello__pb2.HelloResponse.SerializeToString,
       ),
   }
+  # 创建一个 generic_handler
   generic_handler = grpc.method_handlers_generic_handler(
       'helloworld.Hello', rpc_method_handlers)
+  # 将 generic_handler 添加到 gRPC 服务器中的通用 RPC 处理程序中。
   server.add_generic_rpc_handlers((generic_handler,))
