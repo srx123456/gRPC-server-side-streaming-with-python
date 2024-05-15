@@ -1,9 +1,9 @@
 from __future__ import print_function
 import logging
-import threading
 import time
 import grpc
 import random
+import sys
 
 from io import BytesIO, open
 
@@ -13,7 +13,6 @@ import hello_pb2_grpc
 from src.LocalRemoteMapper import LocalRemoteMapper
 
 messages = []
-
 
 def createMapper():
     for _ in range(4):
@@ -38,13 +37,21 @@ def run():
     with grpc.insecure_channel('localhost:50051') as channel:
         # 创建一个HelloStub对象，该对象用于调用gRPC服务器上的方法。
         stub = hello_pb2_grpc.HelloStub(channel)
-        # 将要搜集的源和目的地址设置为一个类
-        messages_ = createMapper()
+        # # 将要搜集的源和目的地址设置为一个类
+        # messages_ = createMapper()
 
-        # 每个消息调用greet_with_message函数发送给服务器。
-        for message in messages_:
-            greet_with_message(stub, name=message.local, message=message.remote)
+        # # 每个消息调用greet_with_message函数发送给服务器。
+        # for message in messages_:
+        #     greet_with_message(stub, name=message.local, message=message.remote)
 
+        # 从命令行接收local和remote参数
+        if len(sys.argv) != 3:
+            print("请提供两个参数")
+            sys.exit(1)
+
+        arg1 = sys.argv[1]
+        arg2 = sys.argv[2]
+        greet_with_message(stub, name=arg1, message=arg2)
 
 if __name__ == '__main__':
     logging.basicConfig()
