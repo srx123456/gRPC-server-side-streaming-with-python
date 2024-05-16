@@ -3,6 +3,9 @@
 需要安装的环境
 pip3 install grpcio
 pip3 install protobuf==3.20.0
+图配置需要的环境
+pip3 install networkx matplotlib
+
 
 main.py   server
 client.py
