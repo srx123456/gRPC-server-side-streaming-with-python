@@ -22,7 +22,7 @@ def createMapper():
         messages.append(mapper)
     return messages
 
-# 通过gRPC与服务器建立连接，并发送带有姓名和消息的请求。
+# 通过gRPC与服务器建立连接，并发送带有姓名和消息的请求。  异步调用通常使用的是异步的 API
 def greet_with_message(stub, name, message):
     start_time = time.time()
     # 使用stub.Greet方法发送一个HelloRequest请求，请求中包含了name和message。
@@ -33,7 +33,7 @@ def greet_with_message(stub, name, message):
 
 # 作用是与gRPC服务器建立连接
 def run():
-    # 创建一个与gRPC服务器的连接，服务器地址为localhost:50051。
+    # 创建一个与gRPC服务器的连接，服务器地址为localhost:50051。   可以更换为ssl tls的安全连接
     with grpc.insecure_channel('localhost:50051') as channel:
         # 创建一个HelloStub对象，该对象用于调用gRPC服务器上的方法。
         stub = hello_pb2_grpc.HelloStub(channel)
