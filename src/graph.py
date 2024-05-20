@@ -4,7 +4,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 config = {}
 
-with open('result/output.txt', 'r') as file:
+with open('result/totalPathFile.txt', 'r') as file:
     lines = file.readlines()
     for line in lines:
         pairs = line.strip().split(',')
