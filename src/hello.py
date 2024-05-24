@@ -21,7 +21,7 @@ class Hello(hello_pb2_grpc.HelloServicer):
         # 传入的key是1.1.1.1
         if ':' not in request.name:
             parts = request.message.split(',')
-            self.sorMsg[request.name] = src.SorMsg.SorMsg(cpu=parts[0], mem=parts[1], bw=parts[2]).__str__()
+            self.sorMsg[request.name] = src.SorMsg.SorMsg(cpu=parts[0], mem=parts[1], sendbw=parts[2], recvbw=parts[3]).__str__()
             # 打开文件，以重新写的方式写入
             with open(self.sorMsgFile, "w") as f:
                 # 将字典转换为JSON格式的字符串，并写入文件
