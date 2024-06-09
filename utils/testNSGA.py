@@ -4,6 +4,8 @@ import json
 import random
 import math
 
+from json_operator import load_sorWeight,update_sorWeight
+
 # Constants
 P_MIN = 0.2
 P_MAX = 0.7
@@ -12,14 +14,6 @@ MAX_BW = 100  # Maximum bandwidth in Mbps (example value)
 
 class Individual(dict):
     pass
-
-def load_sorWeight(filepath):
-    with open(filepath, 'r') as f:
-        sorMsg = json.load(f)
-    sorWeight = {}
-    for key, value in sorMsg.items():
-        sorWeight[key] = [float(x.split(':')[1]) for x in value.split(',')]
-    return sorWeight
 
 def evaluate(individual):
     values = list(individual.values())[0]
@@ -58,7 +52,7 @@ def custom_mutate(ind):
 
 def main():
     global sorWeight
-    sorWeight = load_sorWeight('../result/totalMsgFile.txt')
+    sorWeight = load_sorWeight('../result/total1.txt')
 
     creator.create("FitnessMulti", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
     creator.create("FitnessIndividual", Individual, fitness=creator.FitnessMulti)
@@ -106,9 +100,11 @@ def main():
 
     sorted_pop = tools.sortNondominated(population, len(population), first_front_only=True)
 
-    best_individuals = tools.selBest(population, k=3)
+    best_individuals = tools.selBest(population, k=4)
     for ind in best_individuals:
         print(list(ind.keys())[0])
+    update_sorWeight(best_individuals,'../result/total1.txt')
 
 if __name__ == "__main__":
-    main()
+    while(True):
+        main()

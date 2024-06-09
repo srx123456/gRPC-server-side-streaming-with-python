@@ -4,7 +4,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 config = {}
 
-with open('result/totalPathFile.txt', 'r') as file:
+with open('../result/totalPathFile.txt', 'r') as file:
     lines = file.readlines()
     for line in lines:
         pairs = line.strip().split(',')
@@ -34,7 +34,7 @@ pos = nx.circular_layout(G)  # 设置节点的布局
 # 创建节点图片字典
 node_images = {}
 for node in G.nodes:
-    image_path = 'result/computer.jpeg'  # 替换为你的电脑图片路径
+    image_path = '../result/computer.jpeg'  # 替换为你的电脑图片路径
     image = plt.imread(image_path)
     node_images[node] = image
 
@@ -48,8 +48,6 @@ node_collection = nx.draw_networkx_nodes(G, pos, node_color='white', node_size=[
 for node, image in node_images.items():
     ab = AnnotationBbox(OffsetImage(image, zoom=0.15), pos[node], frameon=False)
     plt.gca().add_artist(ab)
-
-
 
 nx.draw_networkx_edges(G, pos)
 nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')  # 设置节点的标签
