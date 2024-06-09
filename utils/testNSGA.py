@@ -52,7 +52,7 @@ def custom_mutate(ind):
 
 def main():
     global sorWeight
-    sorWeight = load_sorWeight('../result/total1.txt')
+    sorWeight = load_sorWeight('../data/total1.txt')
 
     creator.create("FitnessMulti", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
     creator.create("FitnessIndividual", Individual, fitness=creator.FitnessMulti)
@@ -103,7 +103,7 @@ def main():
     best_individuals = tools.selBest(population, k=4)
     for ind in best_individuals:
         print(list(ind.keys())[0])
-    update_sorWeight(best_individuals,'../result/total1.txt')
+    update_sorWeight(best_individuals,'../data/total1.txt')
 
 if __name__ == "__main__":
     while(True):

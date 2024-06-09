@@ -16,7 +16,7 @@ def load_sorWeight(filepath):
         sorWeight[key] = [float(x.split(':')[1]) for x in value.split(',')]     
     return sorWeight
 
-def update_sorWeight(best_individuals, filepath='result/totalMsgFile.txt'):
+def update_sorWeight(best_individuals, filepath='data/totalMsgFile.txt'):
     with open(filepath, 'r') as f:
         sorMsg = json.load(f)
 
@@ -37,7 +37,7 @@ def update_sorWeight(best_individuals, filepath='result/totalMsgFile.txt'):
         json.dump(sorMsg, f, indent=4)
 
 
-def update_sorWeightRandom(best_individuals, filepath='result/totalMsgFile.txt'):
+def update_sorWeightRandom(best_individuals, filepath='data/totalMsgFile.txt'):
     with open(filepath, 'r') as f:
         sorMsg = json.load(f)
 

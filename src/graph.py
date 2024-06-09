@@ -4,7 +4,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 config = {}
 
-with open('../result/totalPathFile.txt', 'r') as file:
+with open('../data/totalPathFile.txt', 'r') as file:
     lines = file.readlines()
     for line in lines:
         pairs = line.strip().split(',')
@@ -30,11 +30,12 @@ for start, end in config.items():
 # 如果你希望节点分散开来，可以尝试使用其他的布局算法，例如random_layout、circular_layout或shell_layout等。
 # 这些布局算法可以使节点在图中均匀分布，从而避免节点聚集在一起。
 pos = nx.circular_layout(G)  # 设置节点的布局
+# pos = nx.random_layout(G)
 
 # 创建节点图片字典
 node_images = {}
 for node in G.nodes:
-    image_path = '../result/computer.jpeg'  # 替换为你的电脑图片路径
+    image_path = '../data/computer.jpeg'  # 替换为你的电脑图片路径
     image = plt.imread(image_path)
     node_images[node] = image
 
@@ -50,7 +51,20 @@ for node, image in node_images.items():
     plt.gca().add_artist(ab)
 
 nx.draw_networkx_edges(G, pos)
-nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')  # 设置节点的标签
+# nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')  # 设置节点的标签
+# 绘制节点标签，调整位置
+labels = nx.draw_networkx_labels(
+    G, pos, font_size=8, font_color='black',
+    bbox=dict(facecolor='white', edgecolor='none', alpha=0.9)  # 设置标签背景透明度
+)
+
+# 将标签移到节点图片的旁边
+for node, t in labels.items():
+    offset_x = 0.1  # 水平偏移量
+    offset_y = -0.1  # 垂直偏移量
+    pos[node][0] += offset_x
+    pos[node][1] += offset_y
+    t.set_position((pos[node][0], pos[node][1]))
 
 
 plt.axis('off')  # 关闭坐标轴

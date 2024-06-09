@@ -24,5 +24,5 @@ for count in node_counts:
     node_data[count] = data
 
 # 将节点数据保存为JSON文件
-with open("../result/stardand.txt", "w") as f:
+with open("../data/stardand.txt", "w") as f:
     json.dump(node_data, f, indent=4)

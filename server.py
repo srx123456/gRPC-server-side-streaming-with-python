@@ -10,7 +10,7 @@ from src.hello import Hello
 
 def serve():
     print('starting server..')
-    filename = "result/output.txt"
+    filename = "data/output.txt"
     if os.path.exists(filename):
         open(filename, "w").close()
     # 创建一个 grpc.server 对象，并使用 futures.ThreadPoolExecutor(max_workers=10) 作为参数，指定服务器的最大工作线程数为 10。

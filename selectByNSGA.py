@@ -58,7 +58,7 @@ def custom_mutate(ind):
 
 def main():
     global sorWeight
-    sorWeight = load_sorWeight('../result/totalMsgFile.txt')
+    sorWeight = load_sorWeight('../data/totalMsgFile.txt')
 
     creator.create("FitnessMulti", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
     creator.create("FitnessIndividual", Individual, fitness=creator.FitnessMulti)

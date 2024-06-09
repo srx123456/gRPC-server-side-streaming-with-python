@@ -12,7 +12,7 @@ def select_best_individuals(sorWeight, k=3):
 
 # 示例主函数
 def main():
-    file_path = '../result/total2.txt'  # 修改为你的文件路径
+    file_path = '../data/total2.txt'  # 修改为你的文件路径
     sorWeight = load_sorWeight(file_path)
     
     best_individuals = select_best_individuals(sorWeight, 4)
