@@ -100,7 +100,7 @@ def main():
 
     sorted_pop = tools.sortNondominated(population, len(population), first_front_only=True)
 
-    best_individuals = tools.selBest(population, k=4)
+    best_individuals = tools.selBest(population, k=3)
     for ind in best_individuals:
         print(list(ind.keys())[0])
     update_sorWeight(best_individuals,'../data/total1.txt')
